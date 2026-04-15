@@ -16,7 +16,7 @@ import java.util.UUID
  */
 class UgreenStudioProDeviceSupport : AbstractHeadphoneBTBRDeviceSupport(LOG, MAX_MTU) {
 
-    private val protocol = UgreenStudioProProtocol(getDevice())
+    private lateinit var protocol: UgreenStudioProProtocol
 
     init {
         addSupportedService(SPP_UUID)
@@ -28,6 +28,7 @@ class UgreenStudioProDeviceSupport : AbstractHeadphoneBTBRDeviceSupport(LOG, MAX
 
     override fun setContext(gbDevice: GBDevice, btAdapter: BluetoothAdapter, context: Context) {
         super.setContext(gbDevice, btAdapter, context)
+        protocol = UgreenStudioProProtocol(gbDevice)
         LOG.info("UGREEN Studio Pro support initialized for device: {}", gbDevice.name)
     }
 
