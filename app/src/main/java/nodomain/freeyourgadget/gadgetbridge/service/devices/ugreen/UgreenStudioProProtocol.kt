@@ -308,11 +308,11 @@ class UgreenStudioProProtocol(device: GBDevice) : GBDeviceProtocol(device) {
                 val enabled = try { devicePrefs.getBoolean(PREF_UGREEN_GAME_MODE, false) } catch (e: ClassCastException) { devicePrefs.getString(PREF_UGREEN_GAME_MODE, "false") == "true" }
                 encodeSetGameMode(enabled)
             }
-            PREF_UGGREEN_WIND_NOISE -> {
+            PREF_UGREEN_WIND_NOISE -> {
                 val enabled = try { devicePrefs.getBoolean(PREF_UGREEN_WIND_NOISE, false) } catch (e: ClassCastException) { devicePrefs.getString(PREF_UGREEN_WIND_NOISE, "false") == "true" }
                 encodeSetWindNoise(enabled)
             }
-            PREF_UGGREEN_SPATIAL_AUDIO -> {
+            PREF_UGREEN_SPATIAL_AUDIO -> {
                 val enabled = try { devicePrefs.getBoolean(PREF_UGREEN_SPATIAL_AUDIO, false) } catch (e: ClassCastException) { devicePrefs.getString(PREF_UGREEN_SPATIAL_AUDIO, "false") == "true" }
                 encodeSetSpatialAudio(enabled)
             }
