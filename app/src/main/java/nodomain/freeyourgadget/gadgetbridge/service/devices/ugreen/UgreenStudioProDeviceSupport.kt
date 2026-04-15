@@ -60,9 +60,24 @@ class UgreenStudioProDeviceSupport : AbstractHeadphoneBTBRDeviceSupport(LOG, MAX
     }
 
     /**
+     * Called when user changes a setting in Gadgetbridge UI.
+     * This is the key method that sends commands to the device.
+     */
+    override fun onSendConfiguration(config: String) {
+        LOG.info("onSendConfiguration: {}", config)
+
+        val command = protocol.encodeSendConfiguration(config)
+        if (command != null) {
+            sendCommand(command)
+        } else {
+            LOG.warn("No command generated for config: {}", config)
+        }
+    }
+
+    /**
      * Send a command to the headphones.
      */
-    fun sendCommand(command: ByteArray) {
+    private fun sendCommand(command: ByteArray) {
         if (!isConnected) {
             LOG.warn("Cannot send command: device not connected")
             return
@@ -71,41 +86,6 @@ class UgreenStudioProDeviceSupport : AbstractHeadphoneBTBRDeviceSupport(LOG, MAX
         val builder = createTransactionBuilder("ugreen_command")
         builder.write(*command)
         builder.queue()
-    }
-
-    /**
-     * Set ANC mode.
-     */
-    fun setAncMode(mode: Byte) {
-        sendCommand(protocol.encodeSetAncMode(mode))
-    }
-
-    /**
-     * Set EQ preset.
-     */
-    fun setEqPreset(preset: Byte) {
-        sendCommand(protocol.encodeSetEqPreset(preset))
-    }
-
-    /**
-     * Set game mode.
-     */
-    fun setGameMode(enabled: Boolean) {
-        sendCommand(protocol.encodeSetGameMode(enabled))
-    }
-
-    /**
-     * Set wind noise reduction.
-     */
-    fun setWindNoise(enabled: Boolean) {
-        sendCommand(protocol.encodeSetWindNoise(enabled))
-    }
-
-    /**
-     * Set spatial audio.
-     */
-    fun setSpatialAudio(enabled: Boolean) {
-        sendCommand(protocol.encodeSetSpatialAudio(enabled))
     }
 
     override fun dispose() {

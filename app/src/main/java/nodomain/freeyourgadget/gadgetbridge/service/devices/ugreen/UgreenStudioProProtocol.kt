@@ -223,13 +223,17 @@ class UgreenStudioProProtocol(device: GBDevice) : GBDeviceProtocol(device) {
         // We update prefs based on what we received
         return when (subcmd) {
             SUBCMD_ANC -> {
-                if (data.size >= 1) {
-                    GBDeviceEventUpdatePreferences(PREF_UGREEN_ANC_MODE, ancModeToPreference(data[0]))
+                // Response format: <01> <mode> <extra...>
+                // data[1] is the actual ANC mode byte
+                if (data.size >= 2) {
+                    GBDeviceEventUpdatePreferences(PREF_UGREEN_ANC_MODE, ancModeToPreference(data[1]))
                 } else null
             }
             SUBCMD_EQ -> {
-                if (data.size >= 1) {
-                    GBDeviceEventUpdatePreferences(PREF_UGREEN_EQUALIZER_PRESET, eqPresetToPreference(data[0]))
+                // Response format: <01> <preset> <extra...>
+                // data[1] is the actual EQ preset byte
+                if (data.size >= 2) {
+                    GBDeviceEventUpdatePreferences(PREF_UGREEN_EQUALIZER_PRESET, eqPresetToPreference(data[1]))
                 } else null
             }
             SUBCMD_GAME_MODE -> {
@@ -261,9 +265,24 @@ class UgreenStudioProProtocol(device: GBDevice) : GBDeviceProtocol(device) {
 
     private fun handleNotification(data: ByteArray): GBDeviceEvent? {
         LOG.debug("Notification data={}", data.toHexString())
-        // Notifications from Ugreen are unsolicited status updates
-        // Format may vary - log for now, handle specific ones as discovered
-        return null
+        if (data.size < 3) return null
+
+        // Notification format: <subcmd> <02> <value>
+        // e.g. 85 86 87 02 02 A1 → data = 02 02 A1 (ANC changed to Deep)
+        val notifSubcmd = data[0]
+        val value = data[2]
+
+        return when (notifSubcmd) {
+            0x02.toByte() -> {
+                // ANC mode change notification from headphone buttons
+                LOG.info("ANC mode changed to: 0x{}", String.format("%02X", value))
+                GBDeviceEventUpdatePreferences(PREF_UGREEN_ANC_MODE, ancModeToPreference(value))
+            }
+            else -> {
+                LOG.debug("Unhandled notification subcmd: 0x{}", String.format("%02X", notifSubcmd))
+                null
+            }
+        }
     }
 
     // ===== Config Sending =====
