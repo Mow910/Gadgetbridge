@@ -1,5 +1,7 @@
 package nodomain.freeyourgadget.gadgetbridge.service.devices.ugreen
 
+import android.bluetooth.BluetoothAdapter
+import android.content.Context
 import nodomain.freeyourgadget.gadgetbridge.impl.GBDevice
 import nodomain.freeyourgadget.gadgetbridge.service.AbstractHeadphoneBTBRDeviceSupport
 import nodomain.freeyourgadget.gadgetbridge.service.btbr.TransactionBuilder
@@ -14,7 +16,7 @@ import java.util.UUID
  */
 class UgreenStudioProDeviceSupport : AbstractHeadphoneBTBRDeviceSupport(LOG, MAX_MTU) {
 
-    private var protocol: UgreenStudioProProtocol? = null
+    private val protocol = UgreenStudioProProtocol(getDevice())
 
     init {
         addSupportedService(SPP_UUID)
@@ -24,30 +26,33 @@ class UgreenStudioProDeviceSupport : AbstractHeadphoneBTBRDeviceSupport(LOG, MAX
         return true
     }
 
+    override fun setContext(gbDevice: GBDevice, btAdapter: BluetoothAdapter, context: Context) {
+        super.setContext(gbDevice, btAdapter, context)
+        LOG.info("UGREEN Studio Pro support initialized for device: {}", gbDevice.name)
+    }
+
     override fun initializeDevice(builder: TransactionBuilder): TransactionBuilder {
         builder.setDeviceState(GBDevice.State.INITIALIZING)
+        LOG.info("Initializing UGREEN Studio Pro")
 
-        // Request current ANC mode
-        val ancGetCmd = byteArrayOf(
-            0xAA.toByte(), 0xBB.toByte(), 0xCC.toByte(),
-            0x09, 0x00 // subcmd 0x09 with no params = query
-        )
-        // Actually, looking at the protocol, GET queries may use a different pattern.
-        // For now, set device as initialized and let user configure.
-        // TODO: Discover GET/query commands when sniffing the app
+        // Query current ANC mode
+        val ancQuery = protocol.buildCommand(UgreenStudioProProtocol.SUBCMD_ANC)
+        builder.write(*ancQuery)
+
+        // Query current EQ preset
+        val eqQuery = protocol.buildCommand(UgreenStudioProProtocol.SUBCMD_EQ)
+        builder.write(*eqQuery)
 
         builder.setDeviceState(GBDevice.State.INITIALIZED)
         return builder
     }
 
     override fun onSocketRead(data: ByteArray) {
-        if (LOG.isTraceEnabled) {
-            LOG.trace("Received {} bytes: {}", data.size, data.toHexString())
+        if (LOG.isDebugEnabled) {
+            LOG.debug("Received {} bytes: {}", data.size, data.toHexString())
         }
 
-        val proto = protocol ?: return
-        val events = proto.decodeResponse(data)
-
+        val events = protocol.decodeResponse(data)
         for (event in events) {
             evaluateGBDeviceEvent(event)
         }
@@ -57,6 +62,11 @@ class UgreenStudioProDeviceSupport : AbstractHeadphoneBTBRDeviceSupport(LOG, MAX
      * Send a command to the headphones.
      */
     fun sendCommand(command: ByteArray) {
+        if (!isConnected) {
+            LOG.warn("Cannot send command: device not connected")
+            return
+        }
+        LOG.debug("Sending command: {}", command.toHexString())
         val builder = createTransactionBuilder("ugreen_command")
         builder.write(*command)
         builder.queue()
@@ -66,45 +76,39 @@ class UgreenStudioProDeviceSupport : AbstractHeadphoneBTBRDeviceSupport(LOG, MAX
      * Set ANC mode.
      */
     fun setAncMode(mode: Byte) {
-        val proto = protocol ?: return
-        sendCommand(proto.encodeSetAncMode(mode))
+        sendCommand(protocol.encodeSetAncMode(mode))
     }
 
     /**
      * Set EQ preset.
      */
     fun setEqPreset(preset: Byte) {
-        val proto = protocol ?: return
-        sendCommand(proto.encodeSetEqPreset(preset))
+        sendCommand(protocol.encodeSetEqPreset(preset))
     }
 
     /**
      * Set game mode.
      */
     fun setGameMode(enabled: Boolean) {
-        val proto = protocol ?: return
-        sendCommand(proto.encodeSetGameMode(enabled))
+        sendCommand(protocol.encodeSetGameMode(enabled))
     }
 
     /**
      * Set wind noise reduction.
      */
     fun setWindNoise(enabled: Boolean) {
-        val proto = protocol ?: return
-        sendCommand(proto.encodeSetWindNoise(enabled))
+        sendCommand(protocol.encodeSetWindNoise(enabled))
     }
 
     /**
      * Set spatial audio.
      */
     fun setSpatialAudio(enabled: Boolean) {
-        val proto = protocol ?: return
-        sendCommand(proto.encodeSetSpatialAudio(enabled))
+        sendCommand(protocol.encodeSetSpatialAudio(enabled))
     }
 
     override fun dispose() {
         synchronized(ConnectionMonitor) {
-            protocol = null
             super.dispose()
         }
     }
