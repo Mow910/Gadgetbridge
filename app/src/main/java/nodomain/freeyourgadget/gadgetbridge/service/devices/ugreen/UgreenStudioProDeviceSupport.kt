@@ -58,7 +58,7 @@ class UgreenStudioProDeviceSupport : AbstractHeadphoneBTBRDeviceSupport(LOG, MAX
      */
     fun sendCommand(command: ByteArray) {
         val builder = createTransactionBuilder("ugreen_command")
-        builder.write(command)
+        builder.write(*command)
         builder.queue()
     }
 
