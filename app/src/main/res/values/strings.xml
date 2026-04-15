@@ -2135,6 +2135,27 @@
     <string name="devicetype_soundcore_aerofit2" translatable="false">Soundcore AeroFit 2</string>
     <string name="devicetype_pixel_buds_a_series" translatable="false">Pixel Buds A-Series</string>
     <string name="devicetype_moondrop_space_travel" translatable="false">Moondrop Space Travel</string>
+    <string name="devicetype_ugreen_studio_pro" translatable="false">UGREEN Studio Pro</string>
+    <!-- UGREEN Studio Pro settings -->
+    <string name="pref_ugreen_anc_mode_title">ANC Mode</string>
+    <string name="pref_ugreen_anc_off">Off</string>
+    <string name="pref_ugreen_anc_deep">Deep</string>
+    <string name="pref_ugreen_anc_moderate">Moderate</string>
+    <string name="pref_ugreen_anc_mild">Mild</string>
+    <string name="pref_ugreen_anc_auto">Auto</string>
+    <string name="pref_ugreen_anc_transparent">Transparent</string>
+    <string name="pref_ugreen_eq_preset_title">Equalizer Preset</string>
+    <string name="pref_ugreen_eq_classic">Classic</string>
+    <string name="pref_ugreen_eq_jazz">Jazz</string>
+    <string name="pref_ugreen_eq_electronic">Electronic</string>
+    <string name="pref_ugreen_eq_pop">Pop</string>
+    <string name="pref_ugreen_eq_classical">Classical</string>
+    <string name="pref_ugreen_eq_rock">Rock</string>
+    <string name="pref_ugreen_eq_bass_boost">Bass Boost</string>
+    <string name="pref_ugreen_eq_treble_boost">Treble Boost</string>
+    <string name="pref_ugreen_game_mode_title">Game Mode</string>
+    <string name="pref_ugreen_wind_noise_title">Wind Noise Reduction</string>
+    <string name="pref_ugreen_spatial_audio_title">Spatial Audio</string>
     <string name="devicetype_binary_sensor">Binary sensor</string>
     <string name="devicetype_honor_band3" translatable="false">Honor Band 3</string>
     <string name="devicetype_honor_band4" translatable="false">Honor Band 4</string>

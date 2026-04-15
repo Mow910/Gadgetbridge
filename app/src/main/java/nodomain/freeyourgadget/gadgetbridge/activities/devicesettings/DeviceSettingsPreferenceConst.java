@@ -739,4 +739,12 @@ public class DeviceSettingsPreferenceConst {
     public static final String PREF_ATC_BLE_OEPL_MODEL = "pref_atc_ble_oepl_model";
     public static final String PREF_ATC_BLE_OEPL_BLE_ADV_INTERVAL = "pref_atc_ble_oepl_ble_adv_interval";
     public static final String PREF_ATC_BLE_OEPL_OEPL_PROTOCOL_ENABLE = "pref_atc_ble_oepl_oepl_protocol_enable";
+
+    // UGREEN Studio Pro preferences
+    public static final String PREF_UGREEN_ANC_MODE = "pref_ugreen_anc_mode";
+    public static final String PREF_UGREEN_EQUALIZER_PRESET = "pref_ugreen_equalizer_preset";
+    public static final String PREF_UGREEN_GAME_MODE = "pref_ugreen_game_mode";
+    public static final String PREF_UGREEN_WIND_NOISE = "pref_ugreen_wind_noise";
+    public static final String PREF_UGREEN_SPATIAL_AUDIO = "pref_ugreen_spatial_audio";
+    public static final String PREF_UGREEN_DUAL_CONNECTION = "pref_ugreen_dual_connection";
 }

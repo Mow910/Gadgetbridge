@@ -350,6 +350,7 @@ import nodomain.freeyourgadget.gadgetbridge.devices.moyoung.R50ProCoordinator;
 import nodomain.freeyourgadget.gadgetbridge.devices.moyoung.RainbuvvyT97Coordinator;
 import nodomain.freeyourgadget.gadgetbridge.devices.moyoung.ViranC29Coordinator;
 import nodomain.freeyourgadget.gadgetbridge.devices.moyoung.ZL02DCoordinator;
+import nodomain.freeyourgadget.gadgetbridge.devices.ugreen.UgreenStudioProCoordinator;
 import nodomain.freeyourgadget.gadgetbridge.devices.no1f1.No1F1Coordinator;
 import nodomain.freeyourgadget.gadgetbridge.devices.nothing.CmfBuds2Coordinator;
 import nodomain.freeyourgadget.gadgetbridge.devices.nothing.CmfBudsPro2Coordinator;
@@ -913,6 +914,7 @@ public enum DeviceType {
     GENERIC_THERMAL_PRINTER(ThermalPrinterCoordinator.class),
     GENERIC_HEART_RATE(GenericHeartRateCoordinator.class),
     ULTRAHUMAN_RING_AIR(UltrahumanDeviceCoordinator.class),
+    UGREEN_STUDIO_PRO(UgreenStudioProCoordinator.class),
     ATC_BLE_OEPL(ATCBLEOEPLCoordinator.class),
     COOSPO_H6(CoospoH6Coordinator.class),
     COOSPO_HW9(CoospoHW9Coordinator.class),

@@ -5528,4 +5528,45 @@
         <item>MUSIC_CONTROL</item>
         <item>RING_PHONE</item>
     </string-array>
+
+    <!-- UGREEN Studio Pro ANC mode -->
+    <string-array name="ugreen_anc_mode_names">
+        <item>@string/pref_ugreen_anc_off</item>
+        <item>@string/pref_ugreen_anc_deep</item>
+        <item>@string/pref_ugreen_anc_moderate</item>
+        <item>@string/pref_ugreen_anc_mild</item>
+        <item>@string/pref_ugreen_anc_auto</item>
+        <item>@string/pref_ugreen_anc_transparent</item>
+    </string-array>
+    <string-array name="ugreen_anc_mode_values">
+        <item>off</item>
+        <item>deep</item>
+        <item>moderate</item>
+        <item>mild</item>
+        <item>auto</item>
+        <item>transparent</item>
+    </string-array>
+
+    <!-- UGREEN Studio Pro EQ presets -->
+    <string-array name="ugreen_eq_preset_names">
+        <item>@string/pref_ugreen_eq_classic</item>
+        <item>@string/pref_ugreen_eq_jazz</item>
+        <item>@string/pref_ugreen_eq_electronic</item>
+        <item>@string/pref_ugreen_eq_pop</item>
+        <item>@string/pref_ugreen_eq_classical</item>
+        <item>@string/pref_ugreen_eq_rock</item>
+        <item>@string/pref_ugreen_eq_bass_boost</item>
+        <item>@string/pref_ugreen_eq_treble_boost</item>
+    </string-array>
+    <string-array name="ugreen_eq_preset_values">
+        <item>classic</item>
+        <item>jazz</item>
+        <item>electronic</item>
+        <item>pop</item>
+        <item>classical</item>
+        <item>rock</item>
+        <item>bass_boost</item>
+        <item>treble_boost</item>
+    </string-array>
+
 </resources>

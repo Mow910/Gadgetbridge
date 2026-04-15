@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <SwitchPreferenceCompat
+        android:icon="@drawable/ic_noise_control_on"
+        android:key="pref_ugreen_wind_noise"
+        android:title="@string/pref_ugreen_wind_noise_title" />
+</androidx.preference.PreferenceScreen>
