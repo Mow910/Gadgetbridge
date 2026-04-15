@@ -78,6 +78,15 @@ class UgreenStudioProCoordinator : AbstractBLClassicDeviceCoordinator() {
             R.xml.devicesettings_headphones
         )
 
+        // CRITICAL: tell Gadgetbridge which preferences trigger onSendConfiguration()
+        settings.addConnectedPreferences(
+            DeviceSettingsPreferenceConst.PREF_UGREEN_ANC_MODE,
+            DeviceSettingsPreferenceConst.PREF_UGREEN_EQUALIZER_PRESET,
+            DeviceSettingsPreferenceConst.PREF_UGREEN_GAME_MODE,
+            DeviceSettingsPreferenceConst.PREF_UGREEN_WIND_NOISE,
+            DeviceSettingsPreferenceConst.PREF_UGREEN_SPATIAL_AUDIO,
+        )
+
         return settings
     }
 }
