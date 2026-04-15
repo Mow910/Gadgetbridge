@@ -932,6 +932,12 @@ public class DeviceSpecificSettingsFragment extends AbstractPreferenceFragment i
         addPreferenceHandlerFor(PREF_MOONDROP_TOUCH_ANC_MODE_EARBUD);
         addPreferenceHandlerFor(PREF_MOONDROP_TOUCH_ANC_MODE_TRIGGER);
 
+        addPreferenceHandlerFor(PREF_UGREEN_ANC_MODE);
+        addPreferenceHandlerFor(PREF_UGREEN_EQUALIZER_PRESET);
+        addPreferenceHandlerFor(PREF_UGREEN_GAME_MODE);
+        addPreferenceHandlerFor(PREF_UGREEN_WIND_NOISE);
+        addPreferenceHandlerFor(PREF_UGREEN_SPATIAL_AUDIO);
+
         addPreferenceHandlerFor(PREF_MISCALE_SMALL_OBJECTS);
 
         addPreferenceHandlerFor(PREF_MIJIA_LYWSD_COMFORT_TEMPERATURE_LOWER);
