@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <SwitchPreferenceCompat
         android:icon="@drawable/ic_videogame"
+        android:defaultValue="false"
         android:key="pref_ugreen_game_mode"
         android:title="@string/pref_ugreen_game_mode_title" />
 </androidx.preference.PreferenceScreen>

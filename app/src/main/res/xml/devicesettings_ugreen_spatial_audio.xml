@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <SwitchPreferenceCompat
         android:icon="@drawable/ic_speaker"
+        android:defaultValue="false"
         android:key="pref_ugreen_spatial_audio"
         android:title="@string/pref_ugreen_spatial_audio_title" />
 </androidx.preference.PreferenceScreen>

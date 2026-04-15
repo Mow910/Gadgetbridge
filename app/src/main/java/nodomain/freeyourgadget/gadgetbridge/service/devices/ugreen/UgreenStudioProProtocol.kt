@@ -223,18 +223,25 @@ class UgreenStudioProProtocol(device: GBDevice) : GBDeviceProtocol(device) {
         // We update prefs based on what we received
         return when (subcmd) {
             SUBCMD_ANC -> {
-                // Response format: <01> <mode> <extra...>
-                // data[1] is the actual ANC mode byte
-                if (data.size >= 2) {
+                // SET response: just update with the user's chosen value
+                // GET query response format may differ - parse data[1] only if it's a known mode
+                if (data.size >= 2 && isKnownAncMode(data[1])) {
                     GBDeviceEventUpdatePreferences(PREF_UGREEN_ANC_MODE, ancModeToPreference(data[1]))
-                } else null
+                } else if (data.size >= 1 && isKnownAncMode(data[0])) {
+                    GBDeviceEventUpdatePreferences(PREF_UGREEN_ANC_MODE, ancModeToPreference(data[0]))
+                } else {
+                    // Unknown response format - keep current preference
+                    null
+                }
             }
             SUBCMD_EQ -> {
-                // Response format: <01> <preset> <extra...>
-                // data[1] is the actual EQ preset byte
-                if (data.size >= 2) {
+                if (data.size >= 2 && isKnownEqPreset(data[1])) {
                     GBDeviceEventUpdatePreferences(PREF_UGREEN_EQUALIZER_PRESET, eqPresetToPreference(data[1]))
-                } else null
+                } else if (data.size >= 1 && isKnownEqPreset(data[0])) {
+                    GBDeviceEventUpdatePreferences(PREF_UGREEN_EQUALIZER_PRESET, eqPresetToPreference(data[0]))
+                } else {
+                    null
+                }
             }
             SUBCMD_GAME_MODE -> {
                 if (data.size >= 1) {
@@ -298,15 +305,15 @@ class UgreenStudioProProtocol(device: GBDevice) : GBDeviceProtocol(device) {
                 encodeSetEqPreset(preferenceToEqPreset(presetStr))
             }
             PREF_UGREEN_GAME_MODE -> {
-                val enabled = devicePrefs.getBoolean(PREF_UGREEN_GAME_MODE, false)
+                val enabled = try { devicePrefs.getBoolean(PREF_UGREEN_GAME_MODE, false) } catch (e: ClassCastException) { devicePrefs.getString(PREF_UGREEN_GAME_MODE, "false") == "true" }
                 encodeSetGameMode(enabled)
             }
-            PREF_UGREEN_WIND_NOISE -> {
-                val enabled = devicePrefs.getBoolean(PREF_UGREEN_WIND_NOISE, false)
+            PREF_UGGREEN_WIND_NOISE -> {
+                val enabled = try { devicePrefs.getBoolean(PREF_UGREEN_WIND_NOISE, false) } catch (e: ClassCastException) { devicePrefs.getString(PREF_UGREEN_WIND_NOISE, "false") == "true" }
                 encodeSetWindNoise(enabled)
             }
-            PREF_UGREEN_SPATIAL_AUDIO -> {
-                val enabled = devicePrefs.getBoolean(PREF_UGREEN_SPATIAL_AUDIO, false)
+            PREF_UGGREEN_SPATIAL_AUDIO -> {
+                val enabled = try { devicePrefs.getBoolean(PREF_UGREEN_SPATIAL_AUDIO, false) } catch (e: ClassCastException) { devicePrefs.getString(PREF_UGREEN_SPATIAL_AUDIO, "false") == "true" }
                 encodeSetSpatialAudio(enabled)
             }
             PREF_UGREEN_DUAL_CONNECTION -> {
@@ -318,6 +325,15 @@ class UgreenStudioProProtocol(device: GBDevice) : GBDeviceProtocol(device) {
     }
 
     // ===== Preference Mappings =====
+
+    private fun isKnownAncMode(mode: Byte): Boolean {
+        return mode == ANC_OFF || mode == ANC_DEEP || mode == ANC_MODERATE ||
+               mode == ANC_MILD || mode == ANC_AUTO || mode == ANC_TRANSPARENT
+    }
+
+    private fun isKnownEqPreset(preset: Byte): Boolean {
+        return preset in EQ_CLASSIC..EQ_TREBLE_BOOST
+    }
 
     private fun ancModeToPreference(mode: Byte): String {
         return when (mode) {
