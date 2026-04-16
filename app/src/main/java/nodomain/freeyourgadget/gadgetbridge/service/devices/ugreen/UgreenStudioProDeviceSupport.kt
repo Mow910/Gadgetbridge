@@ -5,6 +5,7 @@ import android.content.Context
 import nodomain.freeyourgadget.gadgetbridge.impl.GBDevice
 import nodomain.freeyourgadget.gadgetbridge.service.AbstractHeadphoneBTBRDeviceSupport
 import nodomain.freeyourgadget.gadgetbridge.service.btbr.TransactionBuilder
+import nodomain.freeyourgadget.gadgetbridge.activities.devicesettings.DeviceSettingsPreferenceConst
 import org.slf4j.LoggerFactory
 import java.util.UUID
 
@@ -99,7 +100,7 @@ class UgreenStudioProDeviceSupport : AbstractHeadphoneBTBRDeviceSupport(LOG, MAX
         }
 
         val prefs = getDevicePrefs()
-        val currentMode = prefs.getString(PREF_UGREEN_ANC_MODE, "off") ?: "off"
+        val currentMode = prefs.getString(DeviceSettingsPreferenceConst.PREF_UGREEN_ANC_MODE, "off") ?: "off"
         
         // Cycle through modes
         val nextMode = when (currentMode) {
