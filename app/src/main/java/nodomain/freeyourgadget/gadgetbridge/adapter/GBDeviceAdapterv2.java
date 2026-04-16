@@ -457,8 +457,29 @@ public class GBDeviceAdapterv2 extends ListAdapter<GBDevice, GBDeviceAdapterv2.V
                                                              GBApplication.deviceService(device).onHeartRateTest();
                                                              HeartRateDialog dialog = new HeartRateDialog(device, context);
                                                              dialog.show();
-                                                         }
-                                                     }
+                                                    }
+                                                }
+        );
+
+        //ANC toggle (UGREEN Studio Pro)
+        holder.ancStatusBox.setVisibility(device.getDeviceCoordinator().getSupportedDeviceSpecificSettings(device) != null ? View.VISIBLE : View.GONE);
+        holder.ancStatus.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                try {
+                    final DeviceSupport support = GBApplication.deviceService(device);
+                    if (support != null && support.getClass().getSimpleName().contains("UgreenStudioPro")) {
+                        // Use reflection to call toggleAncMode() if it exists
+                        java.lang.reflect.Method toggleMethod = support.getClass().getMethod("toggleAncMode");
+                        toggleMethod.invoke(support);
+                        showTransientSnackbar(R.string.pref_ugreen_anc_mode_title);
+                    }
+                } catch (Exception e) {
+                    LOG.warn("Error toggling ANC: {}", e.getMessage());
+                }
+            }
+        }
         );
 
         //device specific settings
@@ -1263,6 +1284,8 @@ public class GBDeviceAdapterv2 extends ListAdapter<GBDevice, GBDeviceAdapterv2.V
         LinearLayout batteryStatusBox2;
         TextView batteryStatusLabel2;
         ImageView batteryIcon2;
+        LinearLayout ancStatusBox;
+        ImageView ancStatus;
         ImageView deviceSpecificSettingsView;
         LinearLayout fetchActivityDataBox;
         ImageView fetchActivityData;
@@ -1321,7 +1344,8 @@ public class GBDeviceAdapterv2 extends ListAdapter<GBDevice, GBDeviceAdapterv2.V
             batteryStatusLabel2 = view.findViewById(R.id.battery_status2);
             batteryIcon2 = view.findViewById(R.id.device_battery_status2);
 
-
+            ancStatusBox = view.findViewById(R.id.device_anc_status_box);
+            ancStatus = view.findViewById(R.id.device_anc_status);
 
             deviceSpecificSettingsView = view.findViewById(R.id.device_specific_settings);
             fetchActivityDataBox = view.findViewById(R.id.device_action_fetch_activity_box);

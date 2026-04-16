@@ -207,6 +207,29 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/device_anc_status_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/pref_ugreen_anc_mode_title"
+                    android:tooltipText="@string/pref_ugreen_anc_mode_title"
+                    android:layout_alignParentStart="true"
+                    android:layout_margin="3dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/device_anc_status"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="3dp"
+                        android:scaleType="fitXY"
+                        card_view:srcCompat="@drawable/ic_noise_control_on"
+                        card_view:tint="@color/secondarytext" />
+
+                </LinearLayout>
 
                 <ImageView
                     android:id="@+id/device_specific_settings"
@@ -217,7 +240,7 @@
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="3dp"
                     android:layout_marginBottom="3dp"
-                    android:layout_toEndOf="@id/device_battery_status_box"
+                    android:layout_toEndOf="@id/device_anc_status_box"
                     android:background="?android:attr/selectableItemBackground"
                     android:clickable="true"
                     android:focusable="true"
