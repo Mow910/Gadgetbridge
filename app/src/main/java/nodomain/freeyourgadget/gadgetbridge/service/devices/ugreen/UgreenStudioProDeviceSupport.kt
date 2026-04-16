@@ -114,7 +114,7 @@ class UgreenStudioProDeviceSupport : AbstractHeadphoneBTBRDeviceSupport(LOG, MAX
         LOG.info("ANC toggle: {} -> {}", currentMode, nextMode)
         val command = protocol.buildCommand(
             UgreenStudioProProtocol.SUBCMD_ANC,
-            byteArrayOf(0x01, protocol.preferenceToAncMode(nextMode))
+            byteArrayOf(0x01, protocol.getPreferenceToAncMode(nextMode))
         )
         sendCommand(command)
     }

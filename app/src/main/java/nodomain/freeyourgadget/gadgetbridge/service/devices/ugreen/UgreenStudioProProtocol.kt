@@ -297,14 +297,16 @@ class UgreenStudioProProtocol(device: GBDevice) : GBDeviceProtocol(device) {
 
     private fun preferenceToAncMode(pref: String): Byte {
         return when (pref) {
-            \"deep\" -> ANC_DEEP
-            \"moderate\" -> ANC_MODERATE
-            \"mild\" -> ANC_MILD
-            \"auto\" -> ANC_AUTO
-            \"transparent\" -> ANC_TRANSPARENT
+            "deep" -> ANC_DEEP
+            "moderate" -> ANC_MODERATE
+            "mild" -> ANC_MILD
+            "auto" -> ANC_AUTO
+            "transparent" -> ANC_TRANSPARENT
             else -> ANC_OFF
         }
     }
+
+    fun getPreferenceToAncMode(pref: String): Byte = preferenceToAncMode(pref)
 
     private fun eqPresetToPreference(preset: Byte): String {
         return when (preset) {
