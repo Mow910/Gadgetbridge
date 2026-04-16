@@ -62,15 +62,6 @@ class UgreenStudioProCoordinator : AbstractBLClassicDeviceCoordinator() {
         // EQ preset selection
         settings.addRootScreen(R.xml.devicesettings_ugreen_eq)
 
-        // Game mode toggle
-        settings.addRootScreen(R.xml.devicesettings_ugreen_game_mode)
-
-        // Wind noise reduction toggle
-        settings.addRootScreen(R.xml.devicesettings_ugreen_wind_noise)
-
-        // Spatial audio toggle
-        settings.addRootScreen(R.xml.devicesettings_ugreen_spatial_audio)
-
         // Calls and notifications
         settings.addRootScreen(DeviceSpecificSettingsScreen.CALLS_AND_NOTIFICATIONS)
         settings.addSubScreen(
@@ -82,9 +73,6 @@ class UgreenStudioProCoordinator : AbstractBLClassicDeviceCoordinator() {
         settings.addConnectedPreferences(
             DeviceSettingsPreferenceConst.PREF_UGREEN_ANC_MODE,
             DeviceSettingsPreferenceConst.PREF_UGREEN_EQUALIZER_PRESET,
-            DeviceSettingsPreferenceConst.PREF_UGREEN_GAME_MODE,
-            DeviceSettingsPreferenceConst.PREF_UGREEN_WIND_NOISE,
-            DeviceSettingsPreferenceConst.PREF_UGREEN_SPATIAL_AUDIO,
         )
 
         return settings

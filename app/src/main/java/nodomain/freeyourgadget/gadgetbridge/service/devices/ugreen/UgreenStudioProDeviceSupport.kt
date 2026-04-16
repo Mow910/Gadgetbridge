@@ -88,6 +88,37 @@ class UgreenStudioProDeviceSupport : AbstractHeadphoneBTBRDeviceSupport(LOG, MAX
         builder.queue()
     }
 
+    /**
+     * Toggle ANC through the available modes: OFF -> DEEP -> MODERATE -> MILD -> TRANSPARENT -> OFF
+     * Called when user clicks the ANC button in the quick toggle area.
+     */
+    fun toggleAncMode() {
+        if (!isConnected) {
+            LOG.warn("Cannot toggle ANC: device not connected")
+            return
+        }
+
+        val prefs = getDevicePrefs()
+        val currentMode = prefs.getString(PREF_UGREEN_ANC_MODE, "off") ?: "off"
+        
+        // Cycle through modes
+        val nextMode = when (currentMode) {
+            "off" -> "deep"
+            "deep" -> "moderate"
+            "moderate" -> "mild"
+            "mild" -> "transparent"
+            "transparent" -> "off"
+            else -> "off"
+        }
+
+        LOG.info("ANC toggle: {} -> {}", currentMode, nextMode)
+        val command = protocol.buildCommand(
+            UgreenStudioProProtocol.SUBCMD_ANC,
+            byteArrayOf(0x01, protocol.preferenceToAncMode(nextMode))
+        )
+        sendCommand(command)
+    }
+
     override fun dispose() {
         synchronized(ConnectionMonitor) {
             super.dispose()

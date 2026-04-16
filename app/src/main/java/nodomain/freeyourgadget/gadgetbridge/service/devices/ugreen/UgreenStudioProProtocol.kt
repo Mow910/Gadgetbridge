@@ -33,13 +33,9 @@ class UgreenStudioProProtocol(device: GBDevice) : GBDeviceProtocol(device) {
 
         // Subcommands
         const val SUBCMD_EQ: Byte = 0x05
-        const val SUBCMD_GAME_MODE: Byte = 0x06
-        const val SUBCMD_FIND: Byte = 0x07
-        const val SUBCMD_WIND_NOISE: Byte = 0x08
         const val SUBCMD_ANC: Byte = 0x09
         const val SUBCMD_DUAL_CONN: Byte = 0x0B
         const val SUBCMD_HD_CODEC: Byte = 0x0F
-        const val SUBCMD_SPATIAL_AUDIO: Byte = 0x12
 
         // ANC mode byte values
         const val ANC_OFF: Byte = 0xA0.toByte()
@@ -128,18 +124,6 @@ class UgreenStudioProProtocol(device: GBDevice) : GBDeviceProtocol(device) {
 
     fun encodeSetEqPreset(preset: Byte): ByteArray {
         return buildCommand(SUBCMD_EQ, byteArrayOf(0x01, preset))
-    }
-
-    fun encodeSetGameMode(enabled: Boolean): ByteArray {
-        return buildCommand(SUBCMD_GAME_MODE, byteArrayOf(0x01, if (enabled) 0x01 else 0x00))
-    }
-
-    fun encodeSetWindNoise(enabled: Boolean): ByteArray {
-        return buildCommand(SUBCMD_WIND_NOISE, byteArrayOf(0x01, if (enabled) 0x01 else 0x00))
-    }
-
-    fun encodeSetSpatialAudio(enabled: Boolean): ByteArray {
-        return buildCommand(SUBCMD_SPATIAL_AUDIO, byteArrayOf(0x01, if (enabled) 0x01 else 0x00))
     }
 
     fun encodeSetDualConnection(enabled: Boolean): ByteArray {
@@ -243,26 +227,6 @@ class UgreenStudioProProtocol(device: GBDevice) : GBDeviceProtocol(device) {
                     null
                 }
             }
-            SUBCMD_GAME_MODE -> {
-                if (data.size >= 1) {
-                    GBDeviceEventUpdatePreferences(PREF_UGREEN_GAME_MODE, if (data[0].toInt() != 0) "true" else "false")
-                } else null
-            }
-            SUBCMD_WIND_NOISE -> {
-                if (data.size >= 1) {
-                    GBDeviceEventUpdatePreferences(PREF_UGREEN_WIND_NOISE, if (data[0].toInt() != 0) "true" else "false")
-                } else null
-            }
-            SUBCMD_SPATIAL_AUDIO -> {
-                if (data.size >= 1) {
-                    GBDeviceEventUpdatePreferences(PREF_UGREEN_SPATIAL_AUDIO, if (data[0].toInt() != 0) "true" else "false")
-                } else null
-            }
-            SUBCMD_DUAL_CONN -> {
-                if (data.size >= 1) {
-                    GBDeviceEventUpdatePreferences(PREF_UGREEN_DUAL_CONNECTION, if (data[0].toInt() != 0) "true" else "false")
-                } else null
-            }
             else -> {
                 LOG.debug("Unhandled response subcmd: 0x{}", String.format("%02X", subcmd))
                 null
@@ -304,22 +268,6 @@ class UgreenStudioProProtocol(device: GBDevice) : GBDeviceProtocol(device) {
                 val presetStr = devicePrefs.getString(PREF_UGREEN_EQUALIZER_PRESET, "classic") ?: "classic"
                 encodeSetEqPreset(preferenceToEqPreset(presetStr))
             }
-            PREF_UGREEN_GAME_MODE -> {
-                val enabled = try { devicePrefs.getBoolean(PREF_UGREEN_GAME_MODE, false) } catch (e: ClassCastException) { devicePrefs.getString(PREF_UGREEN_GAME_MODE, "false") == "true" }
-                encodeSetGameMode(enabled)
-            }
-            PREF_UGREEN_WIND_NOISE -> {
-                val enabled = try { devicePrefs.getBoolean(PREF_UGREEN_WIND_NOISE, false) } catch (e: ClassCastException) { devicePrefs.getString(PREF_UGREEN_WIND_NOISE, "false") == "true" }
-                encodeSetWindNoise(enabled)
-            }
-            PREF_UGREEN_SPATIAL_AUDIO -> {
-                val enabled = try { devicePrefs.getBoolean(PREF_UGREEN_SPATIAL_AUDIO, false) } catch (e: ClassCastException) { devicePrefs.getString(PREF_UGREEN_SPATIAL_AUDIO, "false") == "true" }
-                encodeSetSpatialAudio(enabled)
-            }
-            PREF_UGREEN_DUAL_CONNECTION -> {
-                val enabled = devicePrefs.getBoolean(PREF_UGREEN_DUAL_CONNECTION, false)
-                encodeSetDualConnection(enabled)
-            }
             else -> super.encodeSendConfiguration(config)
         }
     }
@@ -349,11 +297,11 @@ class UgreenStudioProProtocol(device: GBDevice) : GBDeviceProtocol(device) {
 
     private fun preferenceToAncMode(pref: String): Byte {
         return when (pref) {
-            "deep" -> ANC_DEEP
-            "moderate" -> ANC_MODERATE
-            "mild" -> ANC_MILD
-            "auto" -> ANC_AUTO
-            "transparent" -> ANC_TRANSPARENT
+            \"deep\" -> ANC_DEEP
+            \"moderate\" -> ANC_MODERATE
+            \"mild\" -> ANC_MILD
+            \"auto\" -> ANC_AUTO
+            \"transparent\" -> ANC_TRANSPARENT
             else -> ANC_OFF
         }
     }
